@@ -33,6 +33,9 @@ transition: slide-left
     - [PharmCAT](https://pharmcat.clinpgx.org)
     - [PharmDOG](https://pharmdog.clinpgx.org)
 
+Our main focus:  
+__Annotation of genomic variant & drug relationships in literature, guidelines, drug labels, and other data sets__
+
 ---
 transition: slide-left
 ---
@@ -40,38 +43,43 @@ transition: slide-left
 # Technical Background
 
 - PostgreSQL 15
-- Java API (using Jersey & JAX-RS)
+- Custom Java Model & API (using Jersey & JAX-RS)
 - Hibernate ORM
 - Website: React SPA / webpack
+
+## Our products
+
+- Websites: ClinPGx, PharmDOG, CPIC
+- API: ClinPGx, CPIC
+- File Artifacts: ClinPGx TSV/JSON files, CPIC DB exports
+- Software: PharmCAT
 
 ---
 transition: slide-left
 ---
 
-# How we organize our data
+# How we organize ClinPGx data
 
 <img src="/AccessionObject.png" width="300"  alt="Accession object structure" style="float: right "/>
 
 Data structure is defined as Java classes organized in packages, interfaces, etc. 
 
-__Accession Objects__ are entities, for example:
-- Gene
-- Drug
-- Variant
-- Haplotype
-- Disease
+__Accession Objects__ = major entities, for example:
+- Gene / Drug / Disease
+- Drug / Variant
 
-__Annotations__ are links between entities, authored by curators, and linked to a publication/document
+__Annotations__ = links between entities, authored by curators, and linked to a publication/document
 - Variant Annotations (VAs)
 - Summary Annotations (SAs)
+- Guideline Annotations
 
-__Supporting Objects__ are things like cross-references, ontology terms, and some genomic location info
+__Supporting Objects__ = cross-references, ontology terms, literature, etc...
 
 ---
 transition: slide-left
 ---
 
-### Current Variation Data Model
+### Current ClinPGx Data Model
 
 ```mermaid {scale: 0.45}
 classDiagram
@@ -126,7 +134,19 @@ classDiagram
 transition: slide-left
 ---
 
-### New Variation Data Model
+# Why does this need to change?
+
+1. No single AccessionObject for each allele/variation
+2. Difficult to aggregate all annotations on the same allele
+3. Multiple types of variation crammed into the same model
+4. Benefit from better inheritance rules for balanced shared/specific properties
+5. Easier documentation and dev experience
+
+---
+transition: slide-left
+---
+
+### New ClinPGx Data Model (inspired by VRS 1.3)
 
 ```mermaid {scale: 0.38}
 classDiagram
