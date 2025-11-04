@@ -160,8 +160,8 @@ classDiagram
     class AccessionObject:::accId
     class Variation:::accId
     class UnlocatedAllele:::accId
-    class DuplicationAllele:::accId
-    class Diplotype:::accId
+    class CopyNumberAllele:::accId
+    class Genotype:::accId
     class Haplotype:::accId
     class Allele:::accId
     classDef accId fill:#f9f;
@@ -178,12 +178,12 @@ classDiagram
     Haplotype: LinkOut definingSequence
     Haplotype: String structuralVariation
     Variation <|-- UnlocatedAllele
-    Variation <|-- DuplicationAllele
-    DuplicationAllele: Variation[] members
-    DuplicationAllele: String comparator [">=", "<=", "x"]
-    DuplicationAllele: String count [1..9, N]
-    DuplicationAllele: boolean isNonIdentical() [derived from members]
-    note for DuplicationAllele "can handle CNVs and\nnon-identical duplications"
+    Variation <|-- CopyNumberAllele
+    CopyNumberAllele: Variation[] members
+    CopyNumberAllele: String comparator [">=", "<=", "x"]
+    CopyNumberAllele: String count [1..9, N]
+    CopyNumberAllele: boolean isNonIdentical() [derived from members]
+    note for CopyNumberAllele "can handle CNVs and\nnon-identical duplications"
     AlleleDefinition: String hgvs
     AlleleDefinition: String assembly
     AlleleDefinition: CrossReference sequence
@@ -193,16 +193,16 @@ classDiagram
     AlleleDefinition: String referenceAllele
     AlleleDefinition: String allele
     UnlocatedAllele: String description
-    Allele "1" --> "1..*" AlleleDefinition : definitions
-    Haplotype --> Allele : members
+    Allele "1" .. "1..*" AlleleDefinition : definitions
+    Haplotype "1..*" .. "1..*" Allele : members
     Variation "0..*" .. "0..*" AlleleFunction: geneFunctions
     AlleleFunction: OntologyTerm functionTerm
     AlleleFunction: String activityScore
     AlleleFunction: AccessionObject gene
-    Variation <|-- Diplotype
-    Diplotype: Haplotype allele1
-    Diplotype: Haplotype allele2
-    Diplotype: String toString()
+    Variation <|-- Genotype
+    Genotype: Variation allele1
+    Genotype: Variation allele2
+    Genotype: String toString()
 ```
 
 ---
@@ -220,8 +220,8 @@ __ClinPGx >>> VRS 1.3__
 
 - Variation >>> Variation
 - Allele >>> Allele
-- Diplotype >>> [None]{style="color: red; font-style: italic"}
-- DuplicationAllele >>> CopyNumber
+- Genotype (or Diplotype) >>> [None]{style="color: red; font-style: italic"}
+- CopyNumberAllele >>> CopyNumber
 - Haplotype >>> Haplotype
 - UnlocatedAllele >>> Text
 
