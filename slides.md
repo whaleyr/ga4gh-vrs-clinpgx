@@ -83,6 +83,7 @@ transition: slide-left
 
 ```mermaid {scale: 0.45}
 classDiagram
+    direction LR
     AccessionObject <|-- Variant
     AccessionObject <|-- Haplotype
     AccessionObject: String accessionId
@@ -128,6 +129,8 @@ classDiagram
     VariantLocation: OntologyTerm genePhenotype
     VariantLocation: Variant variant
     note for VariantLocation "this is what we attach to VA's and SA's"
+    Haplotype .. VariantLocation: haplotypes
+    Variant .. VariantLocation: variant
 ```
 
 ---
@@ -146,10 +149,11 @@ transition: slide-left
 transition: slide-left
 ---
 
-### New ClinPGx Data Model (inspired by VRS 1.3)
+### New ClinPGx Data Model (inspired by [VRS 1.3](https://vrs.ga4gh.org/en/1.3/schema.html))
 
 ```mermaid {scale: 0.38}
 classDiagram
+    direction LR
     AccessionObject <|-- Variation
     AccessionObject: String accessionId
     AccessionObject: String name
@@ -166,6 +170,7 @@ classDiagram
     Variation: AccessionObject[] relatedGenes
     Variation: LinkOut[] linkOuts
     Variation: boolean important
+    Variation: GeneFunction[] geneFunctions
     Allele: AlleleDefinition[] definitions
     Variation <|-- Haplotype
     Haplotype: Allele[] members
@@ -190,12 +195,41 @@ classDiagram
     UnlocatedAllele: String description
     Allele "1" --> "1..*" AlleleDefinition : definitions
     Haplotype --> Allele : members
-    Variation "0..*" --> "0..*" AlleleFunction: geneFunctions
-    AlleleFunction: DataSource source
+    Variation "0..*" .. "0..*" AlleleFunction: geneFunctions
     AlleleFunction: OntologyTerm functionTerm
     AlleleFunction: String activityScore
+    AlleleFunction: AccessionObject gene
     Variation <|-- Diplotype
     Diplotype: Haplotype allele1
     Diplotype: Haplotype allele2
     Diplotype: String toString()
 ```
+
+---
+transition: slide-left
+layout: two-cols-header
+---
+
+# [Comparison]{style="text-decoration: underline"}
+
+::left::
+
+## Model Map
+
+__ClinPGx >>> VRS 1.3__
+
+- Variation >>> Variation
+- Allele >>> Allele
+- Diplotype >>> [None]{style="color: red; font-style: italic"}
+- DuplicationAllele >>> CopyNumber
+- Haplotype >>> Haplotype
+- UnlocatedAllele >>> Text
+
+::right::
+
+## Friction
+
+- Naming: Haplotypes - Cis-Phased Blocks
+- Delineation of ref & alt alleles
+- Multiple location classes
+- Update to VRS 2.0 is not as straight-forward
