@@ -232,4 +232,4 @@ __ClinPGx >>> VRS 1.3__
 - Naming: Haplotypes - Cis-Phased Blocks
 - Delineation of ref & alt alleles
 - Multiple location classes
-- Update to VRS 2.0 is not as straight-forward
+- Update to [VRS 2.0](https://vrs.ga4gh.org/en/2.0/appendices/class_diagram.html#classdiagram) is not as straight-forward
