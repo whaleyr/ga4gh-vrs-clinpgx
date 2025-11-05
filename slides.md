@@ -28,6 +28,7 @@ transition: slide-left
 
 - Clinical Pharmacogenomics
 - https://www.clinpgx.org (formerly pharmgkb.org)
+- Started in __2000__
 - Notable projects:
     - [CPIC](https://cpicpgx.org)
     - [PharmCAT](https://pharmcat.clinpgx.org)
@@ -65,13 +66,14 @@ transition: slide-left
 Data structure is defined as Java classes organized in packages, interfaces, etc. 
 
 __Accession Objects__ = major entities, for example:
-- Gene / Drug / Disease
-- Drug / Variant
+
+\* Gene \* Drug \* Disease \* Drug \* Variant \* Haplotype
 
 __Annotations__ = links between entities, authored by curators, and linked to a publication/document
 - Variant Annotations (VAs)
 - Summary Annotations (SAs)
 - Guideline Annotations
+- Label Annotations
 
 __Supporting Objects__ = cross-references, ontology terms, literature, etc...
 
@@ -84,21 +86,27 @@ transition: slide-left
 ```mermaid {scale: 0.45}
 classDiagram
     direction LR
+    class AccessionObject
+    <<abstract>> AccessionObject
     AccessionObject <|-- Variant
     AccessionObject <|-- Haplotype
     AccessionObject: String accessionId
     AccessionObject: String name
     style AccessionObject fill:#f9f, stroke: #000
+    class Variant
+    link Variant "https://www.clinpgx.org/rsid/rs1800460"
     Variant: SequenceLocation[] locations
     style Variant fill:#f9f, stroke: #000
+    SequenceLocation: Assembly assembly
     SequenceLocation: CrossReference sequence
     SequenceLocation: HgvsSequenceType type
     SequenceLocation: int begin
     SequenceLocation: int end
     SequenceLocation: String referenceAllele
     SequenceLocation: String[] variantAlleles
-    SequenceLocation: Assembly assembly
     Variant "1" --> "0..*" SequenceLocation: locations
+    class Haplotype
+    link Haplotype "https://www.clinpgx.org/haplotype/PA165816544"
     Haplotype: HaplotypeAllele[] alleles
     Haplotype: AccessionObject gene
     Haplotype: String copyNumber
@@ -164,6 +172,7 @@ classDiagram
     class Genotype:::accId
     class Haplotype:::accId
     class Allele:::accId
+    link Allele "https://www.clinpgx.org/allele/PA166404400"
     classDef accId fill:#f9f;
     Variation <|-- Allele
     Variation: AmpTier tierStatus
